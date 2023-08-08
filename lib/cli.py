@@ -2,6 +2,7 @@ from helpers import *
 import random
 from rich import print
 from rich.console import Console
+import time
 
 console = Console()
 
@@ -153,8 +154,24 @@ def find_pokemon(trainer_id):
             choice = input("What would you like to do? ")
             if choice.isnumeric() and int(choice) in [1,2]:
                 if int(choice) == 1:
-                    print("Pokemon Caught!")
-                    add_poke_to_party(poke_id, trainer_id)
+                    dots = "..."
+                    loop = [1,2,3]
+                    for _ in loop:
+                        for dot in dots:
+                            time.sleep(0.5)
+                            print(dot, end="")
+                        time.sleep(0.2)
+                        print("\n")
+
+                    caught_or_not = random.randint(1,poke_level + 1)
+                    if caught_or_not == 1:
+                        print("Pokemon Caught!")
+                        add_poke_to_party(poke_id, trainer_id)
+                    else:
+                        print("Pokemon got away!")
+
+                    time.sleep(0.8)
+                    print("\n")
                     z = True
                     while z == True:
                         again = input ("Would you like to try and catch another Pokemon? (Y/N)")
@@ -167,8 +184,6 @@ def find_pokemon(trainer_id):
                             z = False
                         else:
                             print("invalid selection")
-                    # Bug here
-                    # insert the poke via poke_id
                 elif int(choice) == 2:
                     print("You got away safely!")
                     z = True
