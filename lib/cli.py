@@ -163,7 +163,8 @@ def find_pokemon(trainer_id):
                         time.sleep(0.2)
                         print("\n")
 
-                    caught_or_not = random.randint(1,poke_level + 1)
+                    catch_poke_level = 2 if poke_level == 1 else poke_level**2
+                    caught_or_not = random.randint(1,catch_poke_level + 1)
                     if caught_or_not == 1:
                         print("Pokemon Caught!")
                         add_poke_to_party(poke_id, trainer_id)
