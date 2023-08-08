@@ -3,6 +3,9 @@
 from sqlalchemy import Column, Integer, String, DateTime, func, ForeignKey 
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
+from rich import print
+from rich.console import Console
+
 
 Base = declarative_base()
 

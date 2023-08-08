@@ -1,24 +1,35 @@
 from helpers import *
 import random
+from rich import print
+from rich.console import Console
 
-#In this app we want to:
-# create trainer
-# Show all pokemon
-# Show missing Pokemon
-# Catch Pokemon
-#
-
-
+console = Console()
 
 def display_welcome():
     print("Welcome to Pokemon Catcher!")
+
+    console.print('''
+[bold yellow]       ,___          .-;' [/bold yellow] [bold red]                                                                               [/bold red] [bold yellow]     `;-.         ___,            [/bold yellow]
+[bold yellow]       `"-.`\_...._/`.'   [/bold yellow] [bold red]                                      ,'\                                      [/bold red] [bold yellow]      `.`\_...._/`.-"`            [/bold yellow]
+[bold yellow]    ,      \        /     [/bold yellow] [bold red]        _.----.        ____         ,'  _\\   ___    ___     ____              [/bold red] [bold yellow]        \        /      ,         [/bold yellow]
+[bold yellow] .-' ',    / ()   ()\\    [/bold yellow] [bold red]     _,-'       `.     |    |  /`.   \\,-'    |   \\  /   |   |    \\   |`.    [/bold red] [bold yellow]           /()   () \    .' `-._  [/bold yellow]
+[bold yellow]`'._   \  /[bold red]()[/bold red]    .  [bold red]([/bold red]|    [/bold yellow] [bold red]     \\      __    \\    '-.  | /   `.  ___    |    \\/    |   '-.   \\ |  |   [/bold red] [bold yellow]          |[bold red])[/bold red]  .    [bold red]()[/bold red]\  /   _.'   [/bold yellow]
+[bold yellow]    > .' ;,     -'-  /    [/bold yellow] [bold red]      \\.    \\ \\   |  __  |  |/    ,','_  `.  |          | __  |    \\|  |   [/bold red] [bold yellow]          \  -'-     ,; '. <      [/bold yellow]
+[bold yellow]   / <   |;,     __.;     [/bold yellow] [bold red]        \\    \\/   /,' _`.|      ,' / / / /   |          ,' _`.|     |  |     [/bold red] [bold yellow]         ;.__     ,;|   > \\      [/bold yellow]
+[bold yellow]   '-.'-.|  , \    , \\   [/bold yellow] [bold red]          \\    ,-' /  /   \    ,'   | \\/ / ,`.|         /  /   \\  |     |   [/bold red] [bold yellow]           / ,    / ,  |.-'.-'    [/bold yellow]
+[bold yellow]      `>.|;, \_)    \_)   [/bold yellow] [bold red]          \\    \\ |   \\_/  |   `-.  \\    `'  /|  |    ||   \\_/  | |\\    | [/bold red] [bold yellow]            (_/    (_/ ,;|.<`     [/bold yellow]
+[bold yellow]       `-;     ,    /     [/bold yellow] [bold red]           \\    \\ \\      /       `-.`.___,-' |  |\\  /| \\      /  | |   |  [/bold red] [bold yellow]             \    ,     ;-`       [/bold yellow]
+[bold yellow]          \    /   <      [/bold yellow] [bold red]            \\    \\ `.__,'|  |`-._    `|      |__| \\/ |  `.__,'|  | |   |    [/bold red] [bold yellow]            >   \    /            [/bold yellow]
+[bold yellow]           '. <`'-,_)     [/bold yellow] [bold red]             \\_.-'       |__|    `-._ |              '-.|     '-.| |   |      [/bold red] [bold yellow]         (_,-'`> .'               [/bold yellow]
+[bold yellow]            '._)          [/bold yellow] [bold red]                                     `'                            '-._|       [/bold red] [bold yellow]             (_,'                 [/bold yellow]
+    ''')
+
 
 def display_all_trainers():
     all_trainers = get_all_trainers()
     trainer_counter = 0
     counter = 0
     for trainers in all_trainers:
-        # print(f"{trainers.id}: {trainers}")
         print(f"{counter+1}: {trainers} Trainer ID: {trainers.id}")
         counter += 1
         trainer_counter = trainers.id
@@ -49,12 +60,16 @@ def display_all_pokemon():
     while x:
         all_pokemon = get_all_pokemon()
         for pokemon in all_pokemon:
-            print(pokemon)
+            type = pokemon.type
+            color = get_color(type)
+            print(f"[{color}]{pokemon}[/{color}]")
         y = True
         while y:
             choose_poke = input("Enter Pokemon ID to see Pokemon details. Otherwise, enter anything else: ")
             if choose_poke.isnumeric() and int(choose_poke) in range(1,152):
-                print(get_poke_details(int(choose_poke)))
+                get_poke_details(int(choose_poke))
+                # print(get_poke_details(int(choose_poke)))
+
                 while True:
                     see_more = input("Would you like to see more? (Y/N)")
                     if see_more.lower() == "y":
@@ -82,16 +97,19 @@ def display_party(id):
         party_pokemon = get_party_pokemon(id)
         print("\n")
         for pokemon in party_pokemon:
-            print(pokemon)
+            type = pokemon.type
+            color = get_color(type)
+            print(f"[{color}]{pokemon}[/{color}]")
         choose_poke = input("Enter Pokemon ID to see Pokemon details. Otherwise, enter anything else: ")
         if choose_poke.isnumeric():
             if int(choose_poke) in get_party_ids(id):
                 print("\n")
-                print(get_poke_details(int(choose_poke)))
+                get_poke_details(int(choose_poke))
+                # print(get_poke_details(int(choose_poke)))
+
                 while True:
                     see_more = input("Would you like to see more? (Y/N)")
                     if see_more.lower() == "y":
-                        # print("\n")
                         break
                     elif see_more.lower() == "n":
                         print("\n")
@@ -124,9 +142,10 @@ def find_pokemon(trainer_id):
             poke_level = 6
 
         poke_id = get_poke_by_level(poke_level)
+        display_wild_poke(poke_id)
         
         print("You can: \n")
-        print("1. Catch")
+        print("1. Throw Pokeball")
         print("2. Run\n")
 
         y = True
@@ -192,7 +211,9 @@ def check_pokemon_remaining(trainer_id):
         choice = input("Would you like to see the Pokemon data? (Y/N)")
         if choice.lower() == "y":
             for pokemon in remaining_pokemon:
-                print (pokemon.full_details())
+                type = pokemon.type
+                color = get_color(type)
+                print(f"[{color}]{pokemon.full_details()}[/{color}]")
             another_choice = input("Done? (Any key) ")
             if another_choice:
                 break
@@ -202,10 +223,10 @@ def check_pokemon_remaining(trainer_id):
 def delete_trainer(trainer_id):
     x = True
     while x:
-        confirm_delete = input("Are you sure you would like to delete this trainer?(Y/N)")
+        print("[bold red]Are you sure you would like to delete this trainer? (Y/N) [/bold red]")
+        confirm_delete = input("")
         while True:
             if confirm_delete.lower() == "y":
-                # print("Deleted!")
                 del_trainer(trainer_id)
                 x = False
                 decision = True
@@ -225,12 +246,9 @@ if __name__ == "__main__":
     while x:
         display_welcome()
 
-        # Choose trainer - Stretch goal: create trainer if new game -- done
-        # Confirming trainer choice is ok. 
         print("\n")
         display_all_trainers()
         while True:
-            # Somehow need to make it so that if ash is deleted, misty is now at position 1 and I can then press 1.
             trainer_id = choose_trainer(len(get_trainer_ids()))
             if trainer_id.isnumeric() and int(trainer_id) in get_trainer_ids():
                 print("\n")
