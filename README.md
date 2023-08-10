@@ -2,14 +2,17 @@
 
 **To get the app started:**
 
+First, run the following commands:
+
 ```console
-1. run pipenv shell
-2. run python lib/seed.py
-3. run python lib/cli.py
-4. At this stage, the game should load, and you should be able to select a trainer.
-5. After selecting a trainer, try to catch all of the Pokemon!
-6. You can check how many Pokemon you have in your party and see how many Pokemon you have left to catch.
+pipenv install
+pipenv shell
+python lib/seed.py
+lib/cli.py
 ```
+
+At this stage, the game should load, and you should be able to select a trainer. After selecting a trainer, try to catch all of the Pokemon! You can check how many Pokemon you have in your party and see how many Pokemon you have left to catch.
+
 **What each of the files do:**
 
 1. cli.py - this is where the game logic is.
