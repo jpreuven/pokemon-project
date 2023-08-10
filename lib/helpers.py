@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 import random
 from rich import print
 from rich.console import Console
+from poke_imgs import print_pokemon
 
 engine = create_engine('sqlite:///pokemon_database.db')
 
@@ -42,6 +43,7 @@ def get_poke_details(id):
     type = session.query(Pokemon.type).filter(Pokemon.id == id).first()[0]
     color = get_color(type)
 
+    print(f"[{color}]{print_pokemon(id)}[/{color}]")
     print(f"[{color}]{session.query(Pokemon).filter(Pokemon.id == id).first().full_details()} [/{color}]")
 
 def get_party_ids(id):
@@ -60,6 +62,8 @@ def display_wild_poke(id):
     pokemon = session.query(Pokemon).filter(Pokemon.id == id).all()
     type = session.query(Pokemon.type).filter(Pokemon.id == id).first()[0]
     color = get_color(type)
+
+    print(f"[{color}]{print_pokemon(id)}[/{color}]")
     print(f"[{color}]{pokemon[0]}[/{color}]")
 
 

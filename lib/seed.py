@@ -6,7 +6,7 @@ from models import Pokemon, Party, Trainer, Base
 
 if __name__ == '__main__':
     engine = create_engine('sqlite:///pokemon_database.db')
-    # Base.metadata.create_all (engine)
+    Base.metadata.create_all (engine)
 
     Session = sessionmaker(bind = engine)
     session = Session()
